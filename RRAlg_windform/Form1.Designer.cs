@@ -28,70 +28,272 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.ProcessesView = new System.Windows.Forms.Panel();
+            this.ProcessesViewPanel = new System.Windows.Forms.Panel();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.toolStriptxtPanelSize = new System.Windows.Forms.ToolStripTextBox();
+            this.stLblCount = new System.Windows.Forms.ToolStripLabel();
             this.txtProcessName = new System.Windows.Forms.TextBox();
             this.txtProcessTime = new System.Windows.Forms.NumericUpDown();
             this.btnAddProcess = new System.Windows.Forms.Button();
-            this.timer = new System.Windows.Forms.Timer(this.components);
+            this.btnStart = new System.Windows.Forms.Button();
+            this.txtQTime = new System.Windows.Forms.NumericUpDown();
+            this.label1 = new System.Windows.Forms.Label();
+            this.panelStatus = new System.Windows.Forms.Panel();
+            this.lblART = new System.Windows.Forms.Label();
+            this.lblARTTitle = new System.Windows.Forms.Label();
+            this.lblAST = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.lblAWT = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.lblCompletedProcesses = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.ProcessesViewPanel.SuspendLayout();
+            this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtProcessTime)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtQTime)).BeginInit();
+            this.panelStatus.SuspendLayout();
             this.SuspendLayout();
             // 
-            // ProcessesView
+            // ProcessesViewPanel
             // 
-            this.ProcessesView.AutoScroll = true;
-            this.ProcessesView.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.ProcessesView.Dock = System.Windows.Forms.DockStyle.Left;
-            this.ProcessesView.Location = new System.Drawing.Point(0, 0);
-            this.ProcessesView.Name = "ProcessesView";
-            this.ProcessesView.Size = new System.Drawing.Size(560, 515);
-            this.ProcessesView.TabIndex = 0;
+            this.ProcessesViewPanel.AutoScroll = true;
+            this.ProcessesViewPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.ProcessesViewPanel.Controls.Add(this.toolStrip1);
+            this.ProcessesViewPanel.Dock = System.Windows.Forms.DockStyle.Left;
+            this.ProcessesViewPanel.Location = new System.Drawing.Point(0, 0);
+            this.ProcessesViewPanel.Name = "ProcessesViewPanel";
+            this.ProcessesViewPanel.Size = new System.Drawing.Size(736, 622);
+            this.ProcessesViewPanel.TabIndex = 0;
+            // 
+            // toolStrip1
+            // 
+            this.toolStrip1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.toolStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStriptxtPanelSize,
+            this.stLblCount});
+            this.toolStrip1.Location = new System.Drawing.Point(0, 591);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Size = new System.Drawing.Size(732, 27);
+            this.toolStrip1.TabIndex = 0;
+            this.toolStrip1.Text = "toolStrip1";
+            // 
+            // toolStriptxtPanelSize
+            // 
+            this.toolStriptxtPanelSize.Name = "toolStriptxtPanelSize";
+            this.toolStriptxtPanelSize.Size = new System.Drawing.Size(60, 27);
+            this.toolStriptxtPanelSize.Text = "70%";
+            this.toolStriptxtPanelSize.KeyDown += new System.Windows.Forms.KeyEventHandler(this.toolStriptxtPanelSize_KeyDown);
+            // 
+            // stLblCount
+            // 
+            this.stLblCount.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.stLblCount.Name = "stLblCount";
+            this.stLblCount.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.stLblCount.Size = new System.Drawing.Size(48, 24);
+            this.stLblCount.Text = "Count";
+            this.stLblCount.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // txtProcessName
             // 
             this.txtProcessName.Dock = System.Windows.Forms.DockStyle.Top;
-            this.txtProcessName.Location = new System.Drawing.Point(560, 0);
+            this.txtProcessName.Location = new System.Drawing.Point(736, 0);
             this.txtProcessName.Margin = new System.Windows.Forms.Padding(10);
             this.txtProcessName.Name = "txtProcessName";
             this.txtProcessName.PlaceholderText = "Process name";
-            this.txtProcessName.Size = new System.Drawing.Size(255, 27);
+            this.txtProcessName.Size = new System.Drawing.Size(210, 27);
             this.txtProcessName.TabIndex = 1;
             // 
             // txtProcessTime
             // 
             this.txtProcessTime.Dock = System.Windows.Forms.DockStyle.Top;
-            this.txtProcessTime.Location = new System.Drawing.Point(560, 27);
+            this.txtProcessTime.Location = new System.Drawing.Point(736, 27);
             this.txtProcessTime.Margin = new System.Windows.Forms.Padding(10);
+            this.txtProcessTime.Maximum = new decimal(new int[] {
+            9999,
+            0,
+            0,
+            0});
             this.txtProcessTime.Name = "txtProcessTime";
-            this.txtProcessTime.Size = new System.Drawing.Size(255, 27);
+            this.txtProcessTime.Size = new System.Drawing.Size(210, 27);
             this.txtProcessTime.TabIndex = 2;
             // 
             // btnAddProcess
             // 
             this.btnAddProcess.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnAddProcess.Location = new System.Drawing.Point(560, 54);
+            this.btnAddProcess.Location = new System.Drawing.Point(736, 54);
             this.btnAddProcess.Name = "btnAddProcess";
-            this.btnAddProcess.Size = new System.Drawing.Size(255, 29);
+            this.btnAddProcess.Size = new System.Drawing.Size(210, 29);
             this.btnAddProcess.TabIndex = 3;
             this.btnAddProcess.Text = "Add";
             this.btnAddProcess.UseVisualStyleBackColor = true;
+            this.btnAddProcess.Click += new System.EventHandler(this.btnAddProcess_Click);
             // 
-            // timer
+            // btnStart
             // 
-            this.timer.Interval = 300;
+            this.btnStart.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.btnStart.Location = new System.Drawing.Point(736, 593);
+            this.btnStart.Name = "btnStart";
+            this.btnStart.Size = new System.Drawing.Size(210, 29);
+            this.btnStart.TabIndex = 4;
+            this.btnStart.Text = "Start";
+            this.btnStart.UseVisualStyleBackColor = true;
+            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
+            // 
+            // txtQTime
+            // 
+            this.txtQTime.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.txtQTime.Location = new System.Drawing.Point(736, 566);
+            this.txtQTime.Margin = new System.Windows.Forms.Padding(10);
+            this.txtQTime.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.txtQTime.Name = "txtQTime";
+            this.txtQTime.Size = new System.Drawing.Size(210, 27);
+            this.txtQTime.TabIndex = 5;
+            this.txtQTime.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.txtQTime.ValueChanged += new System.EventHandler(this.txtQTime_ValueChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.label1.Location = new System.Drawing.Point(736, 546);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(115, 20);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "Quantom Time :";
+            // 
+            // panelStatus
+            // 
+            this.panelStatus.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panelStatus.Controls.Add(this.lblART);
+            this.panelStatus.Controls.Add(this.lblARTTitle);
+            this.panelStatus.Controls.Add(this.lblAST);
+            this.panelStatus.Controls.Add(this.label7);
+            this.panelStatus.Controls.Add(this.lblAWT);
+            this.panelStatus.Controls.Add(this.label4);
+            this.panelStatus.Controls.Add(this.lblCompletedProcesses);
+            this.panelStatus.Controls.Add(this.label2);
+            this.panelStatus.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelStatus.Location = new System.Drawing.Point(736, 83);
+            this.panelStatus.Margin = new System.Windows.Forms.Padding(5);
+            this.panelStatus.Name = "panelStatus";
+            this.panelStatus.Padding = new System.Windows.Forms.Padding(5);
+            this.panelStatus.Size = new System.Drawing.Size(210, 176);
+            this.panelStatus.TabIndex = 7;
+            // 
+            // lblART
+            // 
+            this.lblART.AutoSize = true;
+            this.lblART.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblART.Location = new System.Drawing.Point(5, 145);
+            this.lblART.Name = "lblART";
+            this.lblART.Size = new System.Drawing.Size(60, 20);
+            this.lblART.TabIndex = 7;
+            this.lblART.Text = "amount";
+            // 
+            // lblARTTitle
+            // 
+            this.lblARTTitle.AutoSize = true;
+            this.lblARTTitle.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblARTTitle.Location = new System.Drawing.Point(5, 125);
+            this.lblARTTitle.Name = "lblARTTitle";
+            this.lblARTTitle.Size = new System.Drawing.Size(38, 20);
+            this.lblARTTitle.TabIndex = 6;
+            this.lblARTTitle.Text = "ART:";
+            // 
+            // lblAST
+            // 
+            this.lblAST.AutoSize = true;
+            this.lblAST.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblAST.Location = new System.Drawing.Point(5, 105);
+            this.lblAST.Name = "lblAST";
+            this.lblAST.Size = new System.Drawing.Size(60, 20);
+            this.lblAST.TabIndex = 5;
+            this.lblAST.Text = "amount";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label7.Location = new System.Drawing.Point(5, 85);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(38, 20);
+            this.label7.TabIndex = 4;
+            this.label7.Text = "AST:";
+            // 
+            // lblAWT
+            // 
+            this.lblAWT.AutoSize = true;
+            this.lblAWT.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblAWT.Location = new System.Drawing.Point(5, 65);
+            this.lblAWT.Name = "lblAWT";
+            this.lblAWT.Size = new System.Drawing.Size(60, 20);
+            this.lblAWT.TabIndex = 3;
+            this.lblAWT.Text = "amount";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label4.Location = new System.Drawing.Point(5, 45);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(43, 20);
+            this.label4.TabIndex = 2;
+            this.label4.Text = "AWT:";
+            // 
+            // lblCompletedProcesses
+            // 
+            this.lblCompletedProcesses.AutoSize = true;
+            this.lblCompletedProcesses.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblCompletedProcesses.Location = new System.Drawing.Point(5, 25);
+            this.lblCompletedProcesses.Name = "lblCompletedProcesses";
+            this.lblCompletedProcesses.Size = new System.Drawing.Size(48, 20);
+            this.lblCompletedProcesses.TabIndex = 1;
+            this.lblCompletedProcesses.Text = "Count";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label2.Location = new System.Drawing.Point(5, 5);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(153, 20);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "Completed Processes:";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(815, 515);
+            this.ClientSize = new System.Drawing.Size(946, 622);
+            this.Controls.Add(this.panelStatus);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.txtQTime);
+            this.Controls.Add(this.btnStart);
             this.Controls.Add(this.btnAddProcess);
             this.Controls.Add(this.txtProcessTime);
             this.Controls.Add(this.txtProcessName);
-            this.Controls.Add(this.ProcessesView);
+            this.Controls.Add(this.ProcessesViewPanel);
             this.Name = "Form1";
             this.Text = "RoundRobin";
+            this.Load += new System.EventHandler(this.Form1_Load);
+            this.SizeChanged += new System.EventHandler(this.Form1_SizeChanged);
+            this.ProcessesViewPanel.ResumeLayout(false);
+            this.ProcessesViewPanel.PerformLayout();
+            this.toolStrip1.ResumeLayout(false);
+            this.toolStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtProcessTime)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtQTime)).EndInit();
+            this.panelStatus.ResumeLayout(false);
+            this.panelStatus.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -99,10 +301,24 @@
 
         #endregion
 
-        private Panel ProcessesView;
+        private Panel ProcessesViewPanel;
         private TextBox txtProcessName;
         private NumericUpDown txtProcessTime;
         private Button btnAddProcess;
-        private System.Windows.Forms.Timer timer;
+        private ToolStrip toolStrip1;
+        private ToolStripTextBox toolStriptxtPanelSize;
+        private Button btnStart;
+        private NumericUpDown txtQTime;
+        private Label label1;
+        private Panel panelStatus;
+        private Label lblCompletedProcesses;
+        private Label label2;
+        private Label lblART;
+        private Label lblARTTitle;
+        private Label lblAST;
+        private Label label7;
+        private Label lblAWT;
+        private Label label4;
+        private ToolStripLabel stLblCount;
     }
 }

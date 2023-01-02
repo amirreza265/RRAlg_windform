@@ -36,11 +36,14 @@
 
         public int DecreaseWeight(int weight = 1)
         {
+            if (weight < 1)
+                return Weight;
+
             Weight -= weight;
             return Weight;
         }
 
-        public double CompletePercentage() => (double)Weight / InitialWeight;
+        public double CompletePercentage() => 1d - ((double)Weight / InitialWeight);
 
     }
 }
