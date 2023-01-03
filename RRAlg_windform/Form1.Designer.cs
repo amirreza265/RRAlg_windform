@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.ProcessesPanel = new System.Windows.Forms.Panel();
             this.ProcessesListView = new System.Windows.Forms.Panel();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
@@ -164,6 +165,7 @@
             this.txtProcessName.PlaceholderText = "Process name";
             this.txtProcessName.Size = new System.Drawing.Size(210, 27);
             this.txtProcessName.TabIndex = 1;
+            this.txtProcessName.TextChanged += new System.EventHandler(this.txtProcessName_TextChanged);
             // 
             // txtProcessTime
             // 
@@ -171,13 +173,23 @@
             this.txtProcessTime.Location = new System.Drawing.Point(736, 27);
             this.txtProcessTime.Margin = new System.Windows.Forms.Padding(10);
             this.txtProcessTime.Maximum = new decimal(new int[] {
-            9999,
+            999999,
+            0,
+            0,
+            0});
+            this.txtProcessTime.Minimum = new decimal(new int[] {
+            1,
             0,
             0,
             0});
             this.txtProcessTime.Name = "txtProcessTime";
             this.txtProcessTime.Size = new System.Drawing.Size(210, 27);
             this.txtProcessTime.TabIndex = 2;
+            this.txtProcessTime.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // btnAddProcess
             // 
@@ -207,7 +219,12 @@
             this.txtQTime.Location = new System.Drawing.Point(736, 566);
             this.txtQTime.Margin = new System.Windows.Forms.Padding(10);
             this.txtQTime.Maximum = new decimal(new int[] {
-            1000,
+            10000,
+            0,
+            0,
+            0});
+            this.txtQTime.Minimum = new decimal(new int[] {
+            1,
             0,
             0,
             0});
@@ -343,6 +360,7 @@
             this.Controls.Add(this.txtProcessTime);
             this.Controls.Add(this.txtProcessName);
             this.Controls.Add(this.ProcessesPanel);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "RoundRobin";

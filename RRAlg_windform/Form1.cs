@@ -89,7 +89,7 @@ namespace RRAlg_windform
             if (percent < 30 || percent > 100)
                 return;
 
-            ProcessesListView.Width = percent * this.Width / 100;
+            ProcessesPanel.Width = percent * this.Width / 100;
 
             toolStriptxtPanelSize.TextBox.Text = $"{text}%";
         }
@@ -209,9 +209,15 @@ namespace RRAlg_windform
             }
         }
 
+        private void txtProcessName_TextChanged(object sender, EventArgs e)
+        {
+            btnAddProcess.Enabled = txtProcessName.Text.Length > 0;
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
             SetCount();
+            txtProcessName_TextChanged(null, null);
         }
     }
 }
