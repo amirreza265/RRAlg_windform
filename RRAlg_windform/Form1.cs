@@ -15,6 +15,10 @@ namespace RRAlg_windform
 
         private int _quantomTime = 100;
 
+        private Color _activeColor = Color.Blue, _sleepColor = Color.LightBlue;
+
+        private int[] _customColors = new int[0];
+
 
         public Form1()
         {
@@ -24,6 +28,7 @@ namespace RRAlg_windform
             _processEnded = new List<Tuple<string, int, ulong>>();
             _quantomTime = (int)txtQTime.Value;
 
+            RRItem<TextProgressBar>? lastProcess = null;
             _processes.OnGetNext += (q, item, removed) =>
             {
                 item.Data.Invoke(() =>
@@ -33,27 +38,34 @@ namespace RRAlg_windform
                     item.Data.Value = (int)(item.CompletePercentage() * 100d);
                     item.Data.CustomText = $"{txtProcessName.Text}({item.InitialWeight}): Wait({item.TotalWaitingTime}), P({item.Weight})";
                     //change color to show active process
-                    item.Data.ProgressColor = (c == Color.OrangeRed) ? Color.LightGreen : Color.OrangeRed;
+                    item.Data.ProgressColor = _activeColor;
 
                     //Return it back to the previous color after quantom
                     new Thread(() =>
                     {
-                        Thread.Sleep(_quantomTime);
-                        item.Data.Invoke(() =>
+                        if (lastProcess is null)
                         {
-                            item.Data.ProgressColor = c;
+                            lastProcess = item;
+                            return;
+                        }
+
+                        lastProcess?.Data.Invoke(() =>
+                        {
+                            lastProcess!.Data.ProgressColor = _sleepColor;
                         });
+
+                        lastProcess = item;
                     }).Start();
                 });
 
                 if (removed)
                 {
-                    ProcessesViewPanel.Invoke(() =>
+                    ProcessesListView.Invoke(() =>
                     {
                         _processEnded.Add(new Tuple<string, int, ulong>(item.Data.CustomText, item.InitialWeight, item.TotalWaitingTime));
                         Thread.Sleep(_quantomTime);
-                        if (ProcessesViewPanel.Controls.Contains(item.Data))
-                            ProcessesViewPanel.Controls.Remove(item.Data);
+                        if (ProcessesListView.Controls.Contains(item.Data))
+                            ProcessesListView.Controls.Remove(item.Data);
                     });
 
                     CalculateWSR();
@@ -77,7 +89,7 @@ namespace RRAlg_windform
             if (percent < 30 || percent > 100)
                 return;
 
-            ProcessesViewPanel.Width = percent * this.Width / 100;
+            ProcessesListView.Width = percent * this.Width / 100;
 
             toolStriptxtPanelSize.TextBox.Text = $"{text}%";
         }
@@ -98,10 +110,11 @@ namespace RRAlg_windform
                 VisualMode = ProgressBarDisplayMode.CustomText,
                 Minimum = 0,
                 Maximum = 100,
+                ProgressColor = _sleepColor
             };
 
             _processes.AddItem(bar, time);
-            ProcessesViewPanel.Controls.Add(bar);
+            ProcessesListView.Controls.Add(bar);
 
             SetCount();
         }
@@ -138,7 +151,8 @@ namespace RRAlg_windform
         private void CalculateWSR()
         {
             new Thread(() =>
-                panelStatus.Invoke(() => { 
+                panelStatus.Invoke(() =>
+                {
                     var rTime = _processEnded.Sum(i => i.Item2);
                     var count = _processEnded.Count;
                     var wTime = _processEnded.Sum(p => (long)p.Item3);
@@ -152,7 +166,7 @@ namespace RRAlg_windform
                     lblCompletedProcesses.Text = count.ToString();
                     lblAWT.Text = awt.ToString("00.00 q");
                     lblAST.Text = ast.ToString("00.00 q");
-                    lblART.Text = art.ToString("00.00 q");               
+                    lblART.Text = art.ToString("00.00 q");
                 })
             ).Start();
         }
@@ -165,6 +179,34 @@ namespace RRAlg_windform
                     stLblCount.Text = $"Count:{_processes.Count}";
                 })
             ).Start();
+        }
+
+        private void activeProcessToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var colorDialog = new ColorDialog())
+            {
+                colorDialog.CustomColors = _customColors;
+                colorDialog.Color = _activeColor;
+                var result = colorDialog.ShowDialog();
+
+                _customColors = colorDialog.CustomColors;
+                if (result == DialogResult.OK)
+                    _activeColor = colorDialog.Color;
+            }
+        }
+
+        private void sleepProcessToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var colorDialog = new ColorDialog())
+            {
+                colorDialog.CustomColors = _customColors;
+                colorDialog.Color = _sleepColor;
+                var result = colorDialog.ShowDialog();
+
+                _customColors = colorDialog.CustomColors;
+                if (result == DialogResult.OK)
+                    _sleepColor = colorDialog.Color;
+            }
         }
 
         private void Form1_Load(object sender, EventArgs e)

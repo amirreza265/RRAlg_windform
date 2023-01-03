@@ -28,10 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.ProcessesViewPanel = new System.Windows.Forms.Panel();
+            this.ProcessesPanel = new System.Windows.Forms.Panel();
+            this.ProcessesListView = new System.Windows.Forms.Panel();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStriptxtPanelSize = new System.Windows.Forms.ToolStripTextBox();
             this.stLblCount = new System.Windows.Forms.ToolStripLabel();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.colorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.activeProcessToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sleepProcessToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.txtProcessName = new System.Windows.Forms.TextBox();
             this.txtProcessTime = new System.Windows.Forms.NumericUpDown();
             this.btnAddProcess = new System.Windows.Forms.Button();
@@ -47,23 +53,36 @@
             this.label4 = new System.Windows.Forms.Label();
             this.lblCompletedProcesses = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.ProcessesViewPanel.SuspendLayout();
+            this.ProcessesPanel.SuspendLayout();
             this.toolStrip1.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtProcessTime)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtQTime)).BeginInit();
             this.panelStatus.SuspendLayout();
             this.SuspendLayout();
             // 
-            // ProcessesViewPanel
+            // ProcessesPanel
             // 
-            this.ProcessesViewPanel.AutoScroll = true;
-            this.ProcessesViewPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.ProcessesViewPanel.Controls.Add(this.toolStrip1);
-            this.ProcessesViewPanel.Dock = System.Windows.Forms.DockStyle.Left;
-            this.ProcessesViewPanel.Location = new System.Drawing.Point(0, 0);
-            this.ProcessesViewPanel.Name = "ProcessesViewPanel";
-            this.ProcessesViewPanel.Size = new System.Drawing.Size(736, 622);
-            this.ProcessesViewPanel.TabIndex = 0;
+            this.ProcessesPanel.AutoScroll = true;
+            this.ProcessesPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.ProcessesPanel.Controls.Add(this.ProcessesListView);
+            this.ProcessesPanel.Controls.Add(this.toolStrip1);
+            this.ProcessesPanel.Controls.Add(this.menuStrip1);
+            this.ProcessesPanel.Dock = System.Windows.Forms.DockStyle.Left;
+            this.ProcessesPanel.Location = new System.Drawing.Point(0, 0);
+            this.ProcessesPanel.Name = "ProcessesPanel";
+            this.ProcessesPanel.Size = new System.Drawing.Size(736, 622);
+            this.ProcessesPanel.TabIndex = 0;
+            // 
+            // ProcessesListView
+            // 
+            this.ProcessesListView.AutoScroll = true;
+            this.ProcessesListView.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.ProcessesListView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ProcessesListView.Location = new System.Drawing.Point(0, 28);
+            this.ProcessesListView.Name = "ProcessesListView";
+            this.ProcessesListView.Size = new System.Drawing.Size(732, 563);
+            this.ProcessesListView.TabIndex = 2;
             // 
             // toolStrip1
             // 
@@ -93,6 +112,48 @@
             this.stLblCount.Size = new System.Drawing.Size(48, 24);
             this.stLblCount.Text = "Count";
             this.stLblCount.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.viewToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(732, 28);
+            this.menuStrip1.TabIndex = 1;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // viewToolStripMenuItem
+            // 
+            this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.colorToolStripMenuItem});
+            this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(55, 24);
+            this.viewToolStripMenuItem.Text = "View";
+            // 
+            // colorToolStripMenuItem
+            // 
+            this.colorToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.activeProcessToolStripMenuItem,
+            this.sleepProcessToolStripMenuItem});
+            this.colorToolStripMenuItem.Name = "colorToolStripMenuItem";
+            this.colorToolStripMenuItem.Size = new System.Drawing.Size(128, 26);
+            this.colorToolStripMenuItem.Text = "Color";
+            // 
+            // activeProcessToolStripMenuItem
+            // 
+            this.activeProcessToolStripMenuItem.Name = "activeProcessToolStripMenuItem";
+            this.activeProcessToolStripMenuItem.Size = new System.Drawing.Size(186, 26);
+            this.activeProcessToolStripMenuItem.Text = "Active Process";
+            this.activeProcessToolStripMenuItem.Click += new System.EventHandler(this.activeProcessToolStripMenuItem_Click);
+            // 
+            // sleepProcessToolStripMenuItem
+            // 
+            this.sleepProcessToolStripMenuItem.Name = "sleepProcessToolStripMenuItem";
+            this.sleepProcessToolStripMenuItem.Size = new System.Drawing.Size(186, 26);
+            this.sleepProcessToolStripMenuItem.Text = "Sleep Process";
+            this.sleepProcessToolStripMenuItem.Click += new System.EventHandler(this.sleepProcessToolStripMenuItem_Click);
             // 
             // txtProcessName
             // 
@@ -281,15 +342,18 @@
             this.Controls.Add(this.btnAddProcess);
             this.Controls.Add(this.txtProcessTime);
             this.Controls.Add(this.txtProcessName);
-            this.Controls.Add(this.ProcessesViewPanel);
+            this.Controls.Add(this.ProcessesPanel);
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "RoundRobin";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.SizeChanged += new System.EventHandler(this.Form1_SizeChanged);
-            this.ProcessesViewPanel.ResumeLayout(false);
-            this.ProcessesViewPanel.PerformLayout();
+            this.ProcessesPanel.ResumeLayout(false);
+            this.ProcessesPanel.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtProcessTime)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtQTime)).EndInit();
             this.panelStatus.ResumeLayout(false);
@@ -301,7 +365,7 @@
 
         #endregion
 
-        private Panel ProcessesViewPanel;
+        private Panel ProcessesPanel;
         private TextBox txtProcessName;
         private NumericUpDown txtProcessTime;
         private Button btnAddProcess;
@@ -320,5 +384,11 @@
         private Label lblAWT;
         private Label label4;
         private ToolStripLabel stLblCount;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem viewToolStripMenuItem;
+        private ToolStripMenuItem colorToolStripMenuItem;
+        private ToolStripMenuItem activeProcessToolStripMenuItem;
+        private ToolStripMenuItem sleepProcessToolStripMenuItem;
+        private Panel ProcessesListView;
     }
 }
