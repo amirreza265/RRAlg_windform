@@ -34,6 +34,7 @@
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStriptxtPanelSize = new System.Windows.Forms.ToolStripTextBox();
             this.stLblCount = new System.Windows.Forms.ToolStripLabel();
+            this.pbarTotal = new System.Windows.Forms.ToolStripProgressBar();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.colorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -91,7 +92,8 @@
             this.toolStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStriptxtPanelSize,
-            this.stLblCount});
+            this.stLblCount,
+            this.pbarTotal});
             this.toolStrip1.Location = new System.Drawing.Point(0, 591);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(732, 27);
@@ -113,6 +115,11 @@
             this.stLblCount.Size = new System.Drawing.Size(48, 24);
             this.stLblCount.Text = "Count";
             this.stLblCount.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // pbarTotal
+            // 
+            this.pbarTotal.Name = "pbarTotal";
+            this.pbarTotal.Size = new System.Drawing.Size(300, 24);
             // 
             // menuStrip1
             // 
@@ -408,5 +415,6 @@
         private ToolStripMenuItem activeProcessToolStripMenuItem;
         private ToolStripMenuItem sleepProcessToolStripMenuItem;
         private Panel ProcessesListView;
+        private ToolStripProgressBar pbarTotal;
     }
 }

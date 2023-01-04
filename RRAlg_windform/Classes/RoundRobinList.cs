@@ -38,9 +38,14 @@ namespace RRAlg_windform.Classes
             return rrItem;
         }
 
-        public List<T> GetAll()
+        public List<T> GetAllData()
         {
             return Items.Select(i => i.Data).ToList();
+        }
+
+        public List<RRItem<T>> GetAllItems()
+        {
+            return Items.ToList();
         }
 
         //public void AddRange(IEnumerable<T> values)

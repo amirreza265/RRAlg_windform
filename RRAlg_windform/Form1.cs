@@ -33,6 +33,20 @@ namespace RRAlg_windform
             {
                 item.Data.Invoke(() =>
                 {
+                    //Return last process 'Color' back to the previous color after quantom
+                    if (lastProcess is null)
+                    {
+                        lastProcess = item;
+                        return;
+                    }
+
+                    lastProcess?.Data.Invoke(() =>
+                    {
+                        lastProcess!.Data.ProgressColor = _sleepColor;
+                    });
+
+                    lastProcess = item;
+
                     //change progressbar to new value
                     var c = item.Data.ProgressColor;
                     item.Data.Value = (int)(item.CompletePercentage() * 100d);
@@ -40,22 +54,6 @@ namespace RRAlg_windform
                     //change color to show active process
                     item.Data.ProgressColor = _activeColor;
 
-                    //Return it back to the previous color after quantom
-                    new Thread(() =>
-                    {
-                        if (lastProcess is null)
-                        {
-                            lastProcess = item;
-                            return;
-                        }
-
-                        lastProcess?.Data.Invoke(() =>
-                        {
-                            lastProcess!.Data.ProgressColor = _sleepColor;
-                        });
-
-                        lastProcess = item;
-                    }).Start();
                 });
 
                 if (removed)
@@ -71,6 +69,8 @@ namespace RRAlg_windform
                     CalculateWSR();
                     SetCount();
                 }
+
+                new Thread(CalculatePBarTotal).Start();
             };
         }
 
@@ -218,6 +218,28 @@ namespace RRAlg_windform
         {
             SetCount();
             txtProcessName_TextChanged(null, null);
+        }
+
+        private void CalculatePBarTotal()
+        {
+            var sumPercent = 0;
+            try
+            {
+                sumPercent = _processes.GetAllData().Sum(p => p.Value);
+            }
+            catch
+            {
+                return;
+            }
+
+            var endedSum = _processEnded.Count * 100;
+
+            var total = (sumPercent + endedSum) / (_processes.Count + _processEnded.Count);
+
+            toolStrip1.Invoke(() =>
+            {
+                pbarTotal.Value = total;
+            });
         }
     }
 }
