@@ -27,6 +27,8 @@ namespace RRAlg_windform
 
             lastPointX = new double[2];
             lastPointY = new double[2];
+
+            formsPlot1.Plot.AxisScaleLock(true, EqualScaleMode.PreserveLargest);
         }
 
         private void ChartForm_Load(object sender, EventArgs e)
@@ -76,7 +78,7 @@ namespace RRAlg_windform
 
             formsPlot1.Plot.AddLine(lastPointX[0], lastPointY[0], lastPointX[1], lastPointY[1], Color.Green);
             formsPlot1.Plot.AddPoint(x, y, Color.Blue, 5, MarkerShape.filledSquare);
-            formsPlot1.Plot.AddText(y.ToString("0.00"), x, y + 10);
+            formsPlot1.Plot.AddText(y.ToString("0.00"), x, y + 1);
 
             lastPointX[0] = x;
             lastPointY[0] = y;

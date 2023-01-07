@@ -94,6 +94,7 @@
             // 
             // formsPlot1
             // 
+            this.formsPlot1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.formsPlot1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.formsPlot1.Location = new System.Drawing.Point(0, 28);
             this.formsPlot1.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
