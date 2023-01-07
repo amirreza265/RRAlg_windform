@@ -40,6 +40,9 @@
             this.colorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.activeProcessToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sleepProcessToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.chartOfAWTToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.resetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.txtProcessName = new System.Windows.Forms.TextBox();
             this.txtProcessTime = new System.Windows.Forms.NumericUpDown();
             this.btnAddProcess = new System.Windows.Forms.Button();
@@ -125,7 +128,8 @@
             // 
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.viewToolStripMenuItem});
+            this.viewToolStripMenuItem,
+            this.editToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(732, 28);
@@ -135,7 +139,9 @@
             // viewToolStripMenuItem
             // 
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.colorToolStripMenuItem});
+            this.colorToolStripMenuItem,
+            this.chartOfAWTToolStripMenuItem});
+            this.viewToolStripMenuItem.MergeIndex = 1;
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             this.viewToolStripMenuItem.Size = new System.Drawing.Size(55, 24);
             this.viewToolStripMenuItem.Text = "View";
@@ -146,7 +152,7 @@
             this.activeProcessToolStripMenuItem,
             this.sleepProcessToolStripMenuItem});
             this.colorToolStripMenuItem.Name = "colorToolStripMenuItem";
-            this.colorToolStripMenuItem.Size = new System.Drawing.Size(128, 26);
+            this.colorToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
             this.colorToolStripMenuItem.Text = "Color";
             // 
             // activeProcessToolStripMenuItem
@@ -162,6 +168,28 @@
             this.sleepProcessToolStripMenuItem.Size = new System.Drawing.Size(186, 26);
             this.sleepProcessToolStripMenuItem.Text = "Sleep Process";
             this.sleepProcessToolStripMenuItem.Click += new System.EventHandler(this.sleepProcessToolStripMenuItem_Click);
+            // 
+            // chartOfAWTToolStripMenuItem
+            // 
+            this.chartOfAWTToolStripMenuItem.Name = "chartOfAWTToolStripMenuItem";
+            this.chartOfAWTToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
+            this.chartOfAWTToolStripMenuItem.Text = "Chart of AWT";
+            this.chartOfAWTToolStripMenuItem.Click += new System.EventHandler(this.chartOfAWTToolStripMenuItem_Click);
+            // 
+            // editToolStripMenuItem
+            // 
+            this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.resetToolStripMenuItem});
+            this.editToolStripMenuItem.Name = "editToolStripMenuItem";
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(49, 24);
+            this.editToolStripMenuItem.Text = "Edit";
+            // 
+            // resetToolStripMenuItem
+            // 
+            this.resetToolStripMenuItem.Name = "resetToolStripMenuItem";
+            this.resetToolStripMenuItem.Size = new System.Drawing.Size(128, 26);
+            this.resetToolStripMenuItem.Text = "Reset";
+            this.resetToolStripMenuItem.Click += new System.EventHandler(this.resetToolStripMenuItem_Click);
             // 
             // txtProcessName
             // 
@@ -416,5 +444,8 @@
         private ToolStripMenuItem sleepProcessToolStripMenuItem;
         private Panel ProcessesListView;
         private ToolStripProgressBar pbarTotal;
+        private ToolStripMenuItem editToolStripMenuItem;
+        private ToolStripMenuItem resetToolStripMenuItem;
+        private ToolStripMenuItem chartOfAWTToolStripMenuItem;
     }
 }

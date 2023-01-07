@@ -13,4 +13,8 @@
     <Content Include="img\rr_128.ico" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="ScottPlot.WinForms" Version="4.1.60" />
+  </ItemGroup>
+
 </Project>

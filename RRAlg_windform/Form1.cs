@@ -9,9 +9,11 @@ namespace RRAlg_windform
     {
         private RoundRobinList<TextProgressBar> _processes;
         private List<Tuple<string, int, ulong>> _processEnded;
+        private List<Tuple<string, int>> _backupProcess;
 
         private Thread _timer;
         private bool _timerEnabled = false;
+        private int _totalPBar = 0;
 
         private int _quantomTime = 100;
 
@@ -19,6 +21,21 @@ namespace RRAlg_windform
 
         private int[] _customColors = new int[0];
 
+        /// <summary>
+        /// first AWT
+        /// second Quantom
+        /// </summary>
+        public event Action<double, double> OnFinish = (awt, quantom) => { };
+        public event Action OnGetNext = () => { };
+
+        public int Quantom
+        {
+            get => _processes.Quantom;
+            set => _processes.Quantom = value;
+        }
+        public int QuantomTime { get => _quantomTime; set => _quantomTime = value; }
+        public bool TimerEnabled { get => _timerEnabled; set => _timerEnabled = value; }
+        public int TotalPBar { get => _totalPBar; private set => _totalPBar = value; }
 
         public Form1()
         {
@@ -26,7 +43,9 @@ namespace RRAlg_windform
             toolStriptxtPanelSize_KeyDown(null, new KeyEventArgs(keyData: Keys.Enter));
             _processes = new RoundRobinList<TextProgressBar>();
             _processEnded = new List<Tuple<string, int, ulong>>();
-            _quantomTime = (int)txtQTime.Value;
+            _backupProcess = new List<Tuple<string, int>>();
+
+            QuantomTime = (int)txtQTime.Value;
 
             RRItem<TextProgressBar>? lastProcess = null;
             _processes.OnGetNext += (q, item, removed) =>
@@ -61,7 +80,7 @@ namespace RRAlg_windform
                     ProcessesListView.Invoke(() =>
                     {
                         _processEnded.Add(new Tuple<string, int, ulong>(item.Data.CustomText, item.InitialWeight, item.TotalWaitingTime));
-                        Thread.Sleep(_quantomTime);
+                        Thread.Sleep(QuantomTime);
                         if (ProcessesListView.Controls.Contains(item.Data))
                             ProcessesListView.Controls.Remove(item.Data);
                     });
@@ -71,6 +90,7 @@ namespace RRAlg_windform
                 }
 
                 new Thread(CalculatePBarTotal).Start();
+                OnGetNext();
             };
         }
 
@@ -102,10 +122,18 @@ namespace RRAlg_windform
         private void btnAddProcess_Click(object sender, EventArgs e)
         {
             var time = (int)txtProcessTime.Value;
+            var name = txtProcessName.Text;
+
+            AddProcess(name, time);
+            _backupProcess.Add(new Tuple<string, int>(name, time));
+        }
+
+        public void AddProcess(string name, int time)
+        {
             var bar = new TextProgressBar()
             {
                 Dock = DockStyle.Top,
-                CustomText = $"{txtProcessName.Text}({time}):",
+                CustomText = $"{name}({time}):",
                 Value = 0,
                 VisualMode = ProgressBarDisplayMode.CustomText,
                 Minimum = 0,
@@ -114,61 +142,112 @@ namespace RRAlg_windform
             };
 
             _processes.AddItem(bar, time);
-            ProcessesListView.Controls.Add(bar);
+
+            ProcessesListView.Invoke(() =>
+            {
+                ProcessesListView.Controls.Add(bar);
+            });
 
             SetCount();
         }
 
+        public void FillFromBackup()
+        {
+            foreach (var item in _backupProcess)
+            {
+                AddProcess(item.Item1, item.Item2);
+            }
+        }
+
         private void btnStart_Click(object sender, EventArgs e)
         {
-            _timerEnabled = !_timerEnabled;
+            StartOrStop();
+        }
 
-            btnStart.Text = (_timerEnabled) ? "Stop" : "Start";
-            txtQTime.Enabled = !_timerEnabled;
+        public bool StartOrStop()
+        {
+            TimerEnabled = !TimerEnabled;
 
-            if (_timerEnabled)
+            btnStart.Invoke(() =>
+            {
+                btnStart.Text = (TimerEnabled) ? "Stop" : "Start";
+            });
+
+            txtQTime.Invoke(() =>
+            {
+                txtQTime.Enabled = !TimerEnabled;
+            });
+
+            if (TimerEnabled)
             {
                 _timer = new Thread(Timer);
                 _timer.IsBackground = true;
                 _timer.Start();
             }
+
+            return TimerEnabled;
         }
 
         private void Timer()
         {
-            while (_timerEnabled)
+            while (TimerEnabled)
             {
                 _processes.GetNext();
-                Thread.Sleep(_quantomTime);
+
+                //call on finish
+                if (_processes.Count <= 0)
+                    break;
+
+                Thread.Sleep(QuantomTime);
+            }
+
+            if (_processes.Count <= 0)
+            {
+                float ast, awt, art;
+                GetWSR(out awt, out ast, out art);
+
+                StartOrStop();
+                OnFinish(awt, _processes.Quantom);
             }
         }
 
         private void txtQTime_ValueChanged(object sender, EventArgs e)
         {
-            _quantomTime = (int)txtQTime.Value;
+            QuantomTime = (int)txtQTime.Value;
         }
 
         private void CalculateWSR()
         {
             new Thread(() =>
+            {
+                int count;
+                float ast, awt, art;
+                count = GetWSR(out awt, out ast, out art);
+
                 panelStatus.Invoke(() =>
                 {
-                    var rTime = _processEnded.Sum(i => i.Item2);
-                    var count = _processEnded.Count;
-                    var wTime = _processEnded.Sum(p => (long)p.Item3);
-
-                    var ast = (float)rTime / count;
-
-                    var awt = (float)wTime / count;
-
-                    var art = awt + ast;
-
                     lblCompletedProcesses.Text = count.ToString();
                     lblAWT.Text = awt.ToString("00.00 q");
                     lblAST.Text = ast.ToString("00.00 q");
                     lblART.Text = art.ToString("00.00 q");
-                })
-            ).Start();
+                });
+
+            }).Start();
+        }
+
+
+        /// <returns>Count of Elements</returns>
+        private int GetWSR(out float awt, out float ast, out float art)
+        {
+            var rTime = _processEnded.Sum(i => i.Item2);
+            int count = _processEnded.Count;
+            var wTime = _processEnded.Sum(p => (long)p.Item3);
+
+            ast = (float)rTime / count;
+            awt = (float)wTime / count;
+            art = awt + ast;
+
+            return count;
         }
 
         private void SetCount()
@@ -234,11 +313,54 @@ namespace RRAlg_windform
 
             var endedSum = _processEnded.Count * 100;
 
-            var total = (sumPercent + endedSum) / (_processes.Count + _processEnded.Count);
+            var totCount = (_processes.Count + _processEnded.Count);
+
+            if (totCount <= 0)
+                return;
+
+            var total = (sumPercent + endedSum) / totCount;
+
+            if (total is > 100 or < 0)
+                return;
+
+            TotalPBar = total;
 
             toolStrip1.Invoke(() =>
             {
-                pbarTotal.Value = total;
+                pbarTotal.Value = TotalPBar;
+            });
+        }
+
+
+        private void resetToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Reset();
+        }
+
+        private void chartOfAWTToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ChartForm chart = new ChartForm(this);
+
+            chart.Show();
+        }
+
+        public void Reset()
+        {
+            _processes.Clear();
+            _processEnded.Clear();
+
+            panelStatus.Invoke(() =>
+            {
+                lblCompletedProcesses.Text = string.Empty;
+                lblAWT.Text = string.Empty;
+                lblAST.Text = string.Empty;
+                lblART.Text = string.Empty;
+            });
+
+            this.Invoke(() =>
+            {
+                txtProcessName.Text = string.Empty;
+                txtProcessTime.Value = 1;
             });
         }
     }

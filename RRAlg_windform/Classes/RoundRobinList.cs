@@ -38,9 +38,9 @@ namespace RRAlg_windform.Classes
             return rrItem;
         }
 
-        public List<T> GetAllData()
+        public List<T?> GetAllData()
         {
-            return Items.Select(i => i.Data).ToList();
+            return Items?.Select(i => i.Data).ToList();
         }
 
         public List<RRItem<T>> GetAllItems()
@@ -56,7 +56,11 @@ namespace RRAlg_windform.Classes
         //    }
         //}
 
-
+        public void Clear()
+        {
+            Items.Clear();
+            Tick = 0;
+        }
         public T? GetNext()
         {
             if (Items.Count <= 0)
